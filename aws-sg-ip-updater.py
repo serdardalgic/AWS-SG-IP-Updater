@@ -9,10 +9,10 @@ import sys
 # sys      - Provides access to variables used by the interpreter
 
 # define global variables
-sg_id = "" 
-profile = "default" # Still need to add in functionality to use other AWS profiles 
-port = 22 # setting default as 22 
-protocal = "tcp" # Hard coding tcp as default protocal 
+sg_id = ""
+profile = "default" # Still need to add in functionality to use other AWS profiles
+port = 22 # setting default as 22
+protocol = "tcp" # Hard coding tcp as default protocol
 
     # Create a function to get current PUBLIC IP, returns correctly formated CIDR
 def get_current_ip():
@@ -26,16 +26,16 @@ def add_ip(current_ip):
     """Add current IP to the security group"""
     global sg_id
     global port
-    global protocal
+    global protocol
 
     # setup client for ec2
     client = boto3.client("ec2")
 
     # execute security group ingress Boto3 commands
-    # TODO: Add in try for graceful error handling  
+    # TODO: Add in try for graceful error handling
     response = client.authorize_security_group_ingress(
         GroupId=sg_id,
-        IpProtocol=protocal,
+        IpProtocol=protocol,
         FromPort=port,
         ToPort=port,
         CidrIp=current_ip
@@ -54,12 +54,12 @@ def usage():
     print "-s --sg_id                - id of the security group"
     print "-f --profile              - profile name to use from AWSCLI config"
     print "-p --port                 - port for rule"
-    print "-t --protocal             - networking protcal for the rule"
+    print "-t --protocol             - networking protcal for the rule"
     print
     print
     print "Examples:"
     print "aws-sg-ip-updater.py --sg_id sg-d07a2ca8"
-    print "aws-sg-ip-updater.py --sg_id sg-d07a2ca8 --port 22 --protocal tcp"
+    print "aws-sg-ip-updater.py --sg_id sg-d07a2ca8 --port 22 --protocol tcp"
     print
     sys.exit(0)
 
@@ -68,14 +68,14 @@ def main():
     global profile
     global port
     global profile
-    global protocal
+    global protocol
 
     if not len(sys.argv[1:]):
         usage()
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hs:f:p:t:",
-                                   ["help", "sg_id=", "profile=", "port=", "protocal="])
+                                   ["help", "sg_id=", "profile=", "port=", "protocol="])
     except getopt.GetoptError as err:
         # print error and help information
         print str(err) # will print something like "option -q not recognized"
@@ -85,15 +85,15 @@ def main():
         if o in ("-h", "--help"):
             usage()
         elif o in ("-s", "--sg_id"):
-            sg_id = a 
+            sg_id = a
         elif o in ("-f", "--profile"):
             profile = a
         elif o in ("-p", "--port"):
             port = int(a)
-        elif o in ("-t", "--protocal"):
-            protocal = a
+        elif o in ("-t", "--protocol"):
+            protocol = a
         else:
-            assert False, "Unhandled Option"      
+            assert False, "Unhandled Option"
 
     # get current public ip
     get_current_ip()
@@ -102,4 +102,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
