@@ -48,7 +48,7 @@ def usage():
     print
     print "AWS Security Group IP Updater"
     print
-    print "Usage: FILENAMEHERE.py -s sg_id -p profile_from_aws_config"
+    print "Usage: aws-sg-ip-updater.py -s sg-abc123456"
     print " NOTE: This does require the AWSCLI be installed and configured"
     print "-h --help                 - this message"
     print "-s --sg_id                - id of the security group"
@@ -58,8 +58,8 @@ def usage():
     print
     print
     print "Examples:"
-    print "aws-sg-ip-updater.py --sg_id sg-d07a2ca8"
-    print "aws-sg-ip-updater.py --sg_id sg-d07a2ca8 --port 22 --protocol tcp"
+    print "aws-sg-ip-updater.py --sg_id sg-abc123456"
+    print "aws-sg-ip-updater.py --sg_id sg-abc123456 --port 22 --protocol tcp"
     print
     sys.exit(0)
 
