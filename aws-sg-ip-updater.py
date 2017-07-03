@@ -8,25 +8,14 @@ import sys
 # requests - Python HTTP for Humans
 # sys      - Provides access to variables used by the interpreter
 
-# define global variables
-sg_id = ""
-profile = "default" # Still need to add in functionality to use other AWS profiles
-port = 22 # setting default as 22
-protocol = "tcp" # Hard coding tcp as default protocol
-
     # Create a function to get current PUBLIC IP, returns correctly formated CIDR
 def get_current_ip():
     """Returns your current IP in correct CIDR format for AWS"""
-    global current_ip
     r = requests.get(r'http://jsonip.com')
-    ip = r.json()['ip']
-    current_ip = ip + '/32'
+    return r.json()['ip'] + '/32'
 
-def add_ip(current_ip):
+def add_ip(current_ip, sg_id, port, protocol):
     """Add current IP to the security group"""
-    global sg_id
-    global port
-    global protocol
 
     # setup client for ec2
     client = boto3.client("ec2")
@@ -64,11 +53,11 @@ def usage():
     sys.exit(0)
 
 def main():
-    global sg_id
-    global profile
-    global port
-    global profile
-    global protocol
+    # define global variables
+    sg_id = ""
+    profile = "default" # Still need to add in functionality to use other AWS profiles
+    port = 22 # setting default as 22
+    protocol = "tcp" # Hard coding tcp as default protocol
 
     if not len(sys.argv[1:]):
         usage()
@@ -96,9 +85,9 @@ def main():
             assert False, "Unhandled Option"
 
     # get current public ip
-    get_current_ip()
+    ip = get_current_ip()
     # add current ip to the security group
-    add_ip(current_ip)
+    add_ip(ip, sg_id, port, protocol)
 
 if __name__ == "__main__":
     main()
