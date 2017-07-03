@@ -15,7 +15,6 @@ A Python application that updates your security group based off of your current 
 * add in more error handling 
 * Change response to be a friendly message vs. json output 
 * Add in functionality to be able to pass in which AWSCLI profile you want to use. 
-* Add in remove IP functionality
 
 ## Details
 I frequently use a VPN, especially when on public or unknown Wi-Fi. For this reason I always had to login to the AWS Console anytime I wanted to connect to my EC2 instances to update security groups due to my always changing IP. I decided to write this python script to solve this problem.
