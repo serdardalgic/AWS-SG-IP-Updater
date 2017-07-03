@@ -30,6 +30,23 @@ def add_ip(current_ip, sg_id, port, protocol):
         CidrIp=current_ip
     )
     print response
+    
+def remove_ip(current_ip, sg_id, port, protocol):
+    """Add current IP to the security group"""
+
+    # setup client for ec2
+    client = boto3.client("ec2")
+
+    # execute security group ingress Boto3 commands
+    # TODO: Add in try for graceful error handling
+    response = client.revoke_security_group_ingress(
+        GroupId=sg_id,
+        IpProtocol=protocol,
+        FromPort=port,
+        ToPort=port,
+        CidrIp=current_ip
+    )
+    print response
 
 # Define the usage of the app
 def usage():
@@ -58,13 +75,14 @@ def main():
     profile = "default" # Still need to add in functionality to use other AWS profiles
     port = 22 # setting default as 22
     protocol = "tcp" # Hard coding tcp as default protocol
+    remove = False
 
     if not len(sys.argv[1:]):
         usage()
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hs:f:p:t:",
-                                   ["help", "sg_id=", "profile=", "port=", "protocol="])
+        opts, args = getopt.getopt(sys.argv[1:], "hs:f:p:t:r",
+                                   ["help", "sg_id=", "profile=", "port=", "protocol=","remove"])
     except getopt.GetoptError as err:
         # print error and help information
         print str(err) # will print something like "option -q not recognized"
@@ -81,13 +99,19 @@ def main():
             port = int(a)
         elif o in ("-t", "--protocol"):
             protocol = a
+        elif o in ("-r", "--remove"):
+            remove = True
         else:
             assert False, "Unhandled Option"
 
     # get current public ip
     ip = get_current_ip()
-    # add current ip to the security group
-    add_ip(ip, sg_id, port, protocol)
+    
+    # add or remove current ip to the security group 
+    if remove == True:
+        remove_ip(ip, sg_id, port, protocol)
+    else:
+        add_ip(ip, sg_id, port, protocol)
 
 if __name__ == "__main__":
     main()
