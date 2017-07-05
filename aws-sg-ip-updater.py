@@ -30,15 +30,14 @@ def add_ip(current_ip, sg_id, port, protocol):
         CidrIp=current_ip
     )
     print response
-    
+
 def remove_ip(current_ip, sg_id, port, protocol):
-    """Add current IP to the security group"""
+    """remove current IP from the security group"""
 
     # setup client for ec2
     client = boto3.client("ec2")
 
-    # execute security group ingress Boto3 commands
-    # TODO: Add in try for graceful error handling
+    # execute security group revoke ingress Boto3 commands
     response = client.revoke_security_group_ingress(
         GroupId=sg_id,
         IpProtocol=protocol,
@@ -61,6 +60,7 @@ def usage():
     print "-f --profile              - profile name to use from AWSCLI config"
     print "-p --port                 - port for rule"
     print "-t --protocol             - networking protcal for the rule"
+    print "-r --remove               - remove current IP from security group"
     print
     print
     print "Examples:"
@@ -106,8 +106,8 @@ def main():
 
     # get current public ip
     ip = get_current_ip()
-    
-    # add or remove current ip to the security group 
+
+    # add or remove current ip to the security group
     if remove == True:
         remove_ip(ip, sg_id, port, protocol)
     else:
