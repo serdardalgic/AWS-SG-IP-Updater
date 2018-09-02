@@ -29,7 +29,7 @@ def add_ip(current_ip, sg_id, port, protocol):
         ToPort=port,
         CidrIp=current_ip
     )
-    print response
+    print(response)
 
 def remove_ip(current_ip, sg_id, port, protocol):
     """remove current IP from the security group"""
@@ -45,28 +45,28 @@ def remove_ip(current_ip, sg_id, port, protocol):
         ToPort=port,
         CidrIp=current_ip
     )
-    print response
+    print(response)
 
 # Define the usage of the app
 def usage():
     """Prints usage information"""
-    print
-    print "AWS Security Group IP Updater"
-    print
-    print "Usage: aws-sg-ip-updater.py -s sg-abc123456"
-    print " NOTE: This does require the AWSCLI be installed and configured"
-    print "-h --help                 - this message"
-    print "-s --sg_id                - id of the security group"
-    print "-f --profile              - profile name to use from AWSCLI config"
-    print "-p --port                 - port for rule"
-    print "-t --protocol             - networking protcal for the rule"
-    print "-r --remove               - remove current IP from security group"
-    print
-    print
-    print "Examples:"
-    print "aws-sg-ip-updater.py --sg_id sg-abc123456"
-    print "aws-sg-ip-updater.py --sg_id sg-abc123456 --port 22 --protocol tcp"
-    print
+    print()
+    print("AWS Security Group IP Updater")
+    print()
+    print("Usage: aws-sg-ip-updater.py -s sg-abc123456")
+    print(" NOTE: This does require the AWSCLI be installed and configured")
+    print("-h --help                 - this message")
+    print("-s --sg_id                - id of the security group")
+    print("-f --profile              - profile name to use from AWSCLI config")
+    print("-p --port                 - port for rule")
+    print("-t --protocol             - networking protcal for the rule")
+    print("-r --remove               - remove current IP from security group")
+    print()
+    print()
+    print("Examples:")
+    print("aws-sg-ip-updater.py --sg_id sg-abc123456")
+    print("aws-sg-ip-updater.py --sg_id sg-abc123456 --port 22 --protocol tcp")
+    print()
     sys.exit(0)
 
 def main():
@@ -85,7 +85,7 @@ def main():
                                    ["help", "sg_id=", "profile=", "port=", "protocol=","remove"])
     except getopt.GetoptError as err:
         # print error and help information
-        print str(err) # will print something like "option -q not recognized"
+        print(str(err)) # will print something like "option -q not recognized"
         usage()
 
     for o, a in opts:
