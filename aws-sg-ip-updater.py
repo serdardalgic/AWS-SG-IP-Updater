@@ -3,6 +3,12 @@ import getopt
 import requests
 import sys
 
+# Any one of those websites can be used to get your external IP
+# https://ifconfig.co/ip
+# http://www.icanhazip.com
+# http://www.canhazip.com
+IP_QUERY_WEBSITE = "https://ifconfig.co/ip"
+
 # boto3    - The AWS SDK for Python
 # getopt   - Helps scripts to parse the args in sys.argv
 # requests - Python HTTP for Humans
@@ -11,8 +17,8 @@ import sys
     # Create a function to get current PUBLIC IP, returns correctly formated CIDR
 def get_current_ip():
     """Returns your current IP in correct CIDR format for AWS"""
-    r = requests.get(r'http://jsonip.com')
-    return r.json()['ip'] + '/32'
+    r = requests.get(IP_QUERY_WEBSITE)
+    return r.text.rstrip() + '/32'
 
 def add_ip(current_ip, sg_id, port, protocol):
     """Add current IP to the security group"""
